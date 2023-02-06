@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "6637143796",
+    "firebase_url": "https://espautovalve-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "espautovalve",
+    "storage_bucket": "espautovalve.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:6637143796:android:aeedcfdfd77c5a03ef80a1",
+        "android_client_info": {
+          "package_name": "com.example.valve"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "6637143796-ebpmd1ukj4mnkf7j5foglfmiejq51tu2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8PBRiAtdpo7a5A66b86aBlZ52TGdLzUs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "6637143796-ebpmd1ukj4mnkf7j5foglfmiejq51tu2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

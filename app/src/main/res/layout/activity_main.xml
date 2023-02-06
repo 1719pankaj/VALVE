@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
+    tools:context=".MainActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/custom_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="12dp"
+            android:text="VALVE"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/trashTimeOpen"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:src="?attr/clockIcon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <ImageView
+        android:id="@+id/trashTimeClose"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:src="?attr/clockIcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <ImageView
+        android:id="@+id/freshTimeOpen"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="133dp"
+        android:src="?attr/clockIcon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tsTV" />
+
+    <ImageView
+        android:id="@+id/freshTimeClose"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="133dp"
+        android:layout_marginEnd="32dp"
+        android:src="?attr/clockIcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teTV" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="?attr/colorSecondary"
+        android:text="SAVE"
+        android:textColor="?attr/colorOnSecondary"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tsTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        android:textColor="?attr/colorOnPrimary"
+        app:layout_constraintEnd_toEndOf="@+id/trashTimeOpen"
+        app:layout_constraintStart_toStartOf="@+id/trashTimeOpen"
+        app:layout_constraintTop_toBottomOf="@+id/trashTimeOpen" />
+
+    <TextView
+        android:id="@+id/teTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        android:textColor="?attr/colorOnPrimary"
+        app:layout_constraintEnd_toEndOf="@+id/trashTimeClose"
+        app:layout_constraintStart_toStartOf="@+id/trashTimeClose"
+        app:layout_constraintTop_toBottomOf="@+id/trashTimeClose" />
+
+    <TextView
+        android:id="@+id/fsTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        android:textColor="?attr/colorOnPrimary"
+        app:layout_constraintEnd_toEndOf="@+id/freshTimeOpen"
+        app:layout_constraintStart_toStartOf="@+id/freshTimeOpen"
+        app:layout_constraintTop_toBottomOf="@+id/freshTimeOpen" />
+
+    <TextView
+        android:id="@+id/feTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        android:textColor="?attr/colorOnPrimary"
+        app:layout_constraintEnd_toEndOf="@+id/freshTimeClose"
+        app:layout_constraintStart_toStartOf="@+id/freshTimeClose"
+        app:layout_constraintTop_toBottomOf="@+id/freshTimeClose" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
