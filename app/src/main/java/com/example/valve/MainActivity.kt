@@ -1,15 +1,19 @@
 package com.example.valve
 
+import android.annotation.SuppressLint
 import android.app.TimePickerDialog
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -26,6 +30,11 @@ class MainActivity : AppCompatActivity() {
     var trashOpenTimeHr = 0
     var trashOpenTimeMi = 0
 
+    var TObool = false
+    var TCbool = false
+    var FObool = false
+    var FCbool = false
+
     lateinit var database: FirebaseDatabase
     lateinit var myRef: DatabaseReference
 
@@ -35,8 +44,33 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
+        val decor = getWindow().getDecorView();
+        decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
+
         database = FirebaseDatabase.getInstance("https://espautovalve-default-rtdb.asia-southeast1.firebasedatabase.app")
         myRef = database.reference
+
+
+        // Read from the database
+        myRef.addValueEventListener(object: ValueEventListener {
+
+            @SuppressLint("SetTextI18n")
+            override fun onDataChange(snapshot: DataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                val value = snapshot.child("test")
+                TTOonline.text = "🌐 " + get12hFormat(value.child("trashOpenTimeHr").getValue().toString().toInt(), value.child("trashOpenTimeMi").getValue().toString().toInt())
+                TTConline.text = "\uD83C\uDF10 " + get12hFormat(value.child("trashCloseTimeHr").getValue().toString().toInt(), value.child("trashCloseTimeMi").getValue().toString().toInt())
+                FTOonline.text = "\uD83C\uDF10 " + get12hFormat(value.child("freshOpenTimeHr").getValue().toString().toInt(), value.child("freshOpenTimeMi").getValue().toString().toInt())
+                FTConline.text = "\uD83C\uDF10 " + get12hFormat(value.child("freshCloseTimeHr").getValue().toString().toInt(), value.child("freshCloseTimeMi").getValue().toString().toInt())
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("TAG", "Failed to read value.", error.toException())
+            }
+
+        })
 
         updateLables()
 
@@ -50,10 +84,11 @@ class MainActivity : AppCompatActivity() {
             val minute = c.get(Calendar.MINUTE)
 
             val timePickerDialog = TimePickerDialog(this, { view, hourOfDay, minute ->
-                tsTV.setText("$hourOfDay:$minute")
+                tsTV.setText("🟢 " + get12hFormat(hourOfDay, minute))
 //                tsTV.visibility = View.VISIBLE
                 trashOpenTimeHr = hourOfDay
                 trashOpenTimeMi = minute
+                TObool = true
             }, hour, minute, false)
             timePickerDialog.show()
         }
@@ -64,10 +99,11 @@ class MainActivity : AppCompatActivity() {
             val minute = c.get(Calendar.MINUTE)
 
             val timePickerDialog = TimePickerDialog(this, { view, hourOfDay, minute ->
-                teTV.setText("$hourOfDay:$minute")
+                teTV.setText("🟢 " + get12hFormat(hourOfDay, minute))
 //                teTV.visibility = View.VISIBLE
                 trashCloseTimeHr = hourOfDay
                 trashCloseTimeMi = minute
+                TCbool = true
             }, hour, minute, false)
             timePickerDialog.show()
         }
@@ -78,10 +114,11 @@ class MainActivity : AppCompatActivity() {
             val minute = c.get(Calendar.MINUTE)
 
             val timePickerDialog = TimePickerDialog(this, { view, hourOfDay, minute ->
-                fsTV.setText("$hourOfDay:$minute")
+                fsTV.setText("🟢 " + get12hFormat(hourOfDay, minute))
 //                fsTV.visibility = View.VISIBLE
                 freshOpenTimeHr = hourOfDay
                 freshOpenTimeMi = minute
+                FObool = true
             }, hour, minute, false)
             timePickerDialog.show()
         }
@@ -92,10 +129,11 @@ class MainActivity : AppCompatActivity() {
             val minute = c.get(Calendar.MINUTE)
 
             val timePickerDialog = TimePickerDialog(this, { view, hourOfDay, minute ->
-                feTV.setText("$hourOfDay:$minute")
+                feTV.setText("🟢 " + get12hFormat(hourOfDay, minute))
 //                feTV.visibility = View.VISIBLE
                 freshCloseTimeHr = hourOfDay
                 freshCloseTimeMi = minute
+                FCbool = true
             }, hour, minute, false)
             timePickerDialog.show()
         }
@@ -103,11 +141,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun updateLables() {
-        tsTV.text = "Trash Start"
-        teTV.text = "Trash End"
-        fsTV.text = "Fresh Start"
-        feTV.text = "Fresh End"
+        tsTV.text = "🔴 Trash Start"
+        teTV.text = "🔴 Trash End"
+        fsTV.text = "🔴 Fresh Start"
+        feTV.text = "🔴 Fresh End"
     }
+
+    fun get12hFormat(hr: Int, min: Int): String {
+        var hour = hr
+        var am_pm = "AM"
+        if (hour > 12) {
+            hour -= 12
+            am_pm = "PM"
+        }
+        //add leading zero if needed
+        var minStr = min.toString()
+        if (min < 10) {
+            minStr = "0$min"
+        }
+        var hourStr = hour.toString()
+        if (hour < 10) {
+            hourStr = "0$hour"
+        }
+        return "$hourStr:$minStr $am_pm"
+    }
+
 
     fun updateFirebaseTimeRef() {
 
@@ -123,6 +181,10 @@ class MainActivity : AppCompatActivity() {
 //
 //        Toast.makeText(this, trashOpenTimeHr, Toast.LENGTH_SHORT).show()
 
+        if(!TObool || !TCbool || !FObool || !FCbool) {
+            Toast.makeText(this, "Please set all the time", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         myRef.child("test/freshCloseTimeHr").setValue(freshCloseTimeHr)
         myRef.child("test/freshCloseTimeMi").setValue(freshCloseTimeMi)
